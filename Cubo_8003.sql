@@ -1,5 +1,5 @@
 select pcnfsaid.codfilial,
-       pcnfsaid.dtfat,
+       trunc(pcnfsaid.dtfat) DATA_SAIDA,
        pcnfsaid.numnota,
        pcpedc.codemitente,
        (select nome from schippers.pcempr where pcpedc.codemitente = pcempr.matricula) as emitente,
@@ -81,4 +81,6 @@ select pcnfsaid.codfilial,
    and to_date(pcnfsaid.dtfat, 'DD-MM-YY') between 
         to_date( '{varDataInicio}', 'DD/MM/YYYY') and 
         to_date( '{varDataFim}', 'DD/MM/YYYY')
-order by pcnfsaid.dtfat
+   and pcpedc.codemitente = {varCodEmitente}
+order by 
+   totalvenda
