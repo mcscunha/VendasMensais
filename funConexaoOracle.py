@@ -73,7 +73,17 @@ class ConexaoOracle():
 
     def recuperarTodasLinhas(self, curCursor, strSql):
         linhas = []
-        curCursor.execute(strSql)             # consulta sql
-        linhas.append(curCursor.fetchall())   # busca o resultado da consulta
+        curCursor.execute(strSql)       # consulta sql
+        linhas = curCursor.fetchall()   # busca o resultado da consulta
         return linhas
-        
+
+'''
+Retirar uma LISTA dentro de outra:
+    flat_list = []
+    for sublist in l:
+        for item in sublist:
+            flat_list.append(item)
+
+Outra forma mais otimizada:
+    flatten = [item for sublist in l for item in sublist]
+'''
