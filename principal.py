@@ -9,7 +9,7 @@ Data    : 01/05/2019
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-
+import os
 from openpyxl import Workbook
 from funConexaoOracle import ConexaoOracle
 from funArquivoTexto import ArquivoTexto
@@ -89,7 +89,9 @@ for vendedor, linhas in dicCodEmitente.items():
         c += 1
 
     # Gravando o arquivo XLS
-    book.save('Cubo_8003_{}.xlsx'.format(vendedor))
+    if not os.path.exists('./Resultado'):
+        os.makedirs('./Resultado')
+    book.save('./Resultado/Cubo_8003_{}.xlsx'.format(vendedor))
 
 # FIM - Gravacao do XLS
 #
