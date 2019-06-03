@@ -18,10 +18,13 @@ from dados_confidenciais import dicConexaoOracle
 
 
 # DADOS A SEREM ALTERADOS PELO USUARIO
-VENDEDORES = [40]
-lstEstado  = ['SP', 'MG']
-datInicio  = '01/05/2019'
-datFim     = '31/05/2019'
+VENDEDORES   = [40]
+bolFiltroNot = False
+lstEstado    = ['SP', 'MG']
+bolFiltroNot = True
+lstEstado    = ["'SP', MG'"]
+datInicio    = '01/05/2019'
+datFim       = '31/05/2019'
 # FIM DOS DADOS ALTERADOS PELO USUARIO
 
 
@@ -51,10 +54,14 @@ for vendedor in VENDEDORES:
 
     if len(lstEstado) > 0:
         for indice, estado in enumerate(lstEstado):
+            if bolFiltroNot:
+                strEstado = "and pcclient.estent not in ('" + estado + "')"
+            else:
+                "and pcclient.estent in ('" + estado + "')"
             strSql = strCubo.format(varDataInicio=datInicio,
                                     varDataFim=datFim,
                                     varCodUsur=vendedor,
-                                    varFiltroEstado="and pcclient.estent in ('" + estado + "')")
+                                    varFiltroEstado=strEstado)
             # Nao trocar esta ordem de execucao
             # Primeiro deve-se recuperar as linhas e depois o cabecalho
             strItemDic = str(vendedor) + '-' + str(indice)
