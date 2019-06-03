@@ -6,14 +6,23 @@ de planilhas resumo de vendas do mes
 Criador : MuriloCunha
 Data    : 01/05/2019
 '''
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+
+from datetime import date, datetime, timezone
 import os
 from openpyxl import Workbook
 from funConexaoOracle import ConexaoOracle
 from funArquivoTexto import ArquivoTexto
 from dados_confidenciais import dicConexaoOracle
+
+
+# DADOS A SEREM ALTERADOS PELO USUARIO
+VENDEDORES = [40]
+lstEstado  = ['SP', 'MG']
+datInicio  = '01/05/2019'
+datFim     = '31/05/2019'
+# FIM DOS DADOS ALTERADOS PELO USUARIO
 
 
 # Constantes de conexao com o banco
@@ -23,12 +32,9 @@ USUARIO = dicConexaoOracle['user']
 SENHA = dicConexaoOracle['pass']
 SID = dicConexaoOracle['sid']
 ARQ_SQL = 'Cubo_8003.sql'
-VENDEDORES = [46, 8888]
 
-# Dados para se usar na recuperacao dos dados no banco
-datInicio = '01/04/2019'
-datFim = '02/04/2019'
-dicCodEmitente = {}
+
+dicCodUsur = {}
 lstCabecalho = []
 
 # Recuperar o codigo SQL gravado no arquivo .sql
@@ -41,12 +47,27 @@ curCursor = conOracle.criarCursor()
 
 # Recuperar info dos vendedores e alimentar o dicionario
 for vendedor in VENDEDORES:
-    strCubo = strCubo.format(varDataInicio=datInicio,
-                            varDataFim=datFim,
-                            varCodEmitente=vendedor)
-    # Nao trocar esta ordem de execucao
-    # Primeiro deve-se recuperar as linhas e depois o cabecalho
-    dicCodEmitente[vendedor] = conOracle.recuperarTodasLinhas(curCursor, strCubo)
+    print('VENDEDOR:', vendedor)
+
+    if len(lstEstado) > 0:
+        for indice, estado in enumerate(lstEstado):
+            strSql = strCubo.format(varDataInicio=datInicio,
+                                    varDataFim=datFim,
+                                    varCodUsur=vendedor,
+                                    varFiltroEstado="and pcclient.estent in ('" + estado + "')")
+            # Nao trocar esta ordem de execucao
+            # Primeiro deve-se recuperar as linhas e depois o cabecalho
+            strItemDic = str(vendedor) + '-' + str(indice)
+            dicCodUsur[strItemDic] = conOracle.recuperarTodasLinhas(curCursor, strSql)
+    else:
+        strSql = strCubo.format(varDataInicio=datInicio,
+                                varDataFim=datFim,
+                                varCodUsur=vendedor,
+                                varFiltroEstado='')
+        # Nao trocar esta ordem de execucao
+        # Primeiro deve-se recuperar as linhas e depois o cabecalho
+        dicCodUsur[vendedor] = conOracle.recuperarTodasLinhas(curCursor, strSql)
+
     if len(lstCabecalho) == 0:
         # Nao usar APPEND para acrescentar somente uma vez E dados tipo LISTA
         # O APPEND cria uma LISTA DENTRO DE OUTRA
@@ -60,7 +81,7 @@ conOracle.fecharConexao()
 # Gravacao dos dados no XLS
 
 # Acrescentar os dados recuperados do banco na planilha
-for vendedor, linhas in dicCodEmitente.items():
+for vendedor, linhas in dicCodUsur.items():
     # Criando a pasta de trabalho
     book = Workbook()
 
@@ -71,8 +92,8 @@ for vendedor, linhas in dicCodEmitente.items():
     sheet.append(lstCabecalho)
 
     c = 1
-    for linha in dicCodEmitente[vendedor]:
-        print('\tInserindo linha:', c)
+    for linha in dicCodUsur[vendedor]:
+        print('Vendedor: {}\t-Inserindo linha: {}'.format(vendedor, c))
         #
         # A linha abaixo insere EXATAMENTE como o dado se apresenta no PRINT
         # Se for um NUMBER e o separador de milhar for "." (ponto), a planilha
@@ -84,17 +105,25 @@ for vendedor, linhas in dicCodEmitente.items():
         # para cada coluna (STRING, NUMBER, DATE...) de acordo com o dado.
         # Entao, esta forma é preferida para inserir varias info sem se preocupar
         # com os tipos
-        print('\tLinha:', c)
         sheet.append(linha)
         c += 1
 
     # Gravando o arquivo XLS
     if not os.path.exists('./Resultado'):
         os.makedirs('./Resultado')
-    book.save('./Resultado/Cubo_8003_{}.xlsx'.format(vendedor))
-
+    if os.path.isfile('./Resultado/Cubo_8003_{}.xlsx'.format(vendedor)):
+        os.remove('./Resultado/Cubo_8003_{}.xlsx'.format(vendedor))
+    
+    datAgora = datetime.now()
+    strData = datAgora.strftime('%Y%m%d')
+    strHora = datAgora.strftime('%H%M%S')
+    #print(agora.year, '-', agora.month, '-', agora.day, ' | ',
+    #      agora.hour, ':', agora.minute, ':', agora.second)
+    book.save('./Resultado/Cubo_8003_{}_{}_{}.xlsx'.format(
+        vendedor, strData, strHora))
 # FIM - Gravacao do XLS
 #
 
 print('Arquivo(s) criado(s) com sucesso')
 print('Encerrando a aplicação')
+exit(0)
