@@ -19,10 +19,8 @@ from dados_confidenciais import dicConexaoOracle
 
 # DADOS A SEREM ALTERADOS PELO USUARIO
 VENDEDORES   = [40]
-bolFiltroNot = False
+bolFiltroNot = False         # True = NOT IN  |  False = IN
 lstEstado    = ['SP', 'MG']
-bolFiltroNot = True
-lstEstado    = ["'SP', MG'"]
 datInicio    = '01/05/2019'
 datFim       = '31/05/2019'
 # FIM DOS DADOS ALTERADOS PELO USUARIO
@@ -52,28 +50,28 @@ curCursor = conOracle.criarCursor()
 for vendedor in VENDEDORES:
     print('VENDEDOR:', vendedor)
 
-    if len(lstEstado) > 0:
-        for indice, estado in enumerate(lstEstado):
-            if bolFiltroNot:
-                strEstado = "and pcclient.estent not in ('" + estado + "')"
-            else:
-                "and pcclient.estent in ('" + estado + "')"
-            strSql = strCubo.format(varDataInicio=datInicio,
-                                    varDataFim=datFim,
-                                    varCodUsur=vendedor,
-                                    varFiltroEstado=strEstado)
-            # Nao trocar esta ordem de execucao
-            # Primeiro deve-se recuperar as linhas e depois o cabecalho
-            strItemDic = str(vendedor) + '-' + str(indice)
-            dicCodUsur[strItemDic] = conOracle.recuperarTodasLinhas(curCursor, strSql)
+    if bolFiltroNot:
+        strEstado = "and pcclient.estent not in (" + str(lstEstado)[1:-1] + ")"
+        indice = 0
     else:
-        strSql = strCubo.format(varDataInicio=datInicio,
-                                varDataFim=datFim,
-                                varCodUsur=vendedor,
-                                varFiltroEstado='')
-        # Nao trocar esta ordem de execucao
-        # Primeiro deve-se recuperar as linhas e depois o cabecalho
-        dicCodUsur[vendedor] = conOracle.recuperarTodasLinhas(curCursor, strSql)
+        if len(lstEstado) > 0:
+            for indice, estado in enumerate(lstEstado):
+                strEstado = "and pcclient.estent in ('" + estado + "')"
+        else:
+            strEstado = ''
+
+    strSql = strCubo.format(varDataInicio=datInicio,
+                            varDataFim=datFim,
+                            varCodUsur=vendedor,
+                            varFiltroEstado=strEstado)
+
+    print(strSql)
+    exit(0)
+
+    # Nao trocar esta ordem de execucao
+    # Primeiro deve-se recuperar as linhas e depois o cabecalho
+    strItemDic = str(vendedor) + '-' + str(indice)
+    dicCodUsur[strItemDic] = conOracle.recuperarTodasLinhas(curCursor, strSql)
 
     if len(lstCabecalho) == 0:
         # Nao usar APPEND para acrescentar somente uma vez E dados tipo LISTA
