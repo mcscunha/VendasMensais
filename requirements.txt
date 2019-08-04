@@ -1,0 +1,6 @@
+conda create -n VendasMensais python=3.6
+
+conda activate VendasMensais
+
+conda install openpyxl
+conda install cx_oracle

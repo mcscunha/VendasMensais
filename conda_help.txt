@@ -1,0 +1,30 @@
+#Create a conda environment
+conda create --name <environment-name> python=<version:2.7/3.5>
+
+#Gives you list of packages used for the environment
+conda list 
+
+#Save all the info about packages to your folder
+conda list -e > requirements.txt 
+
+#Install from .txt file
+conda create --name <env_name> --file <.txt file>
+
+#To export environment file
+activate <environment-name>
+conda env export > <environment-name>.yml
+
+#For create the environment using file yml
+conda env create -f <environment-name>.yml
+
+
+
+#Remove conda environments
+conda env remove -n <env_name>
+
+Duplicate conda environments
+conda create --name <clone_name> --clone <env_name>
+
+#List Conda environments
+conda env list
+

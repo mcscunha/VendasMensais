@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 '''
     Classe para manipulacao de arquivos texto
 
@@ -5,8 +8,6 @@
 Criador : MuriloCunha
 Data    : 01/05/2019
 '''
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 
 import os
@@ -33,3 +34,18 @@ class ArquivoTexto():
         else:
             print('Arquivo não encontrado.')
             return []
+
+
+class ArquivoXlsx():
+    def __init__(self, strDiretorio, strNomeArquivoXlsx):
+        self.strDiretorio = strDiretorio
+        self.strNomeArquivo = strNomeArquivoXlsx
+
+    def PrepararDiretorioParaGravacao(self):
+        if not os.path.exists(self.strDiretorio):
+            os.makedirs(self.strDiretorio)
+    
+    def ApagarArquivoExistente(self):
+        strCaminhoCompleto = os.path.join(self.strDiretorio, self.strNomeArquivo)
+        if os.path.isfile(strCaminhoCompleto):
+            os.remove(strCaminhoCompleto)

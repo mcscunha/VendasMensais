@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 '''
     Classe para conexao e manipulacao de dados do Oracle
 
@@ -5,10 +7,6 @@
 Criador : MuriloCunha
 Data    : 01/05/2019
 '''
-
-
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 
 import cx_Oracle
