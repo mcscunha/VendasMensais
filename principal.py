@@ -24,24 +24,27 @@ from dados_confidenciais import dicConexaoOracle
 
 # DADOS A SEREM ALTERADOS PELO USUARIO
 VENDEDORES = [
+    # [ ID_Vendedor, bolFiltroNot ] , [Estados]
+    # bolFiltroNot ==>> False = IN (inclusao do estado)
+    #                   True = NOT IN (exclusao dos estados)
     [ [3, False], ['MG'] ],
-    [ [3, False], ['SP'] ],
-    [ [3, True], ['MG', 'SP'] ],
-    [ [10, False], [] ],
-    [ [13, False], [] ],
-    [ [16, False], [] ],
-    [ [19, False], ['MS'] ],
-    [ [19, True], ['MS'] ],
-    [ [22, False], ['SP'] ],
-    [ [22, False], ['MG'] ],
-    [ [22, True], ['SP', 'MG'] ],
-    [ [24, False], [] ],
-    [ [34, False], ['PR'] ],
-    [ [34, False], ['MS'] ],
-    [ [34, True], ['PR', 'MS'] ],
-    [ [35, False], [] ],
-    [ [38, False], [] ],
-    [ [40, False], [] ],
+    # [ [3, False], ['SP'] ],
+    # [ [3, True], ['MG', 'SP'] ],
+    # [ [10, False], [] ],
+    # [ [13, False], [] ],
+    # [ [16, False], [] ],
+    # [ [19, False], ['MS'] ],
+    # [ [19, True], ['MS'] ],
+    # [ [22, False], ['SP'] ],
+    # [ [22, False], ['MG'] ],
+    # [ [22, True], ['SP', 'MG'] ],
+    # [ [24, False], [] ],
+    # [ [34, False], ['PR'] ],
+    # [ [34, False], ['MS'] ],
+    # [ [34, True], ['PR', 'MS'] ],
+    # [ [35, False], [] ],
+    # [ [38, False], [] ],
+    # [ [40, False], [] ],
 ]
 datInicio    = '01/07/2019'
 datFim       = '31/07/2019'
@@ -109,9 +112,10 @@ for vendedor in VENDEDORES:
         # O APPEND cria uma LISTA DENTRO DE OUTRA
         lstCabecalho = conOracle.extrairNomeColunas(curCursor)
 
-    GravarResultadoEmPlanilha(dicCodUsur, lstCabecalho)
+    GravarResultadoEmPlanilha(dicCodUsur[strItemDic], lstCabecalho, strItemDic)
+    # Limpar da memoria o conteudo do dicionario usado
     del dicCodUsur[strItemDic]
-
+    
 # Fechar a conexao
 curCursor.close()
 conOracle.fecharConexao()
