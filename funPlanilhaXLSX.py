@@ -8,8 +8,10 @@ Data    : 04/08/2019
 
 LOG de alteracoes:
 -------------------------------------------------
-04/08/2019- Criacao deste arquivo
-
+04/08/2019 - Criacao deste arquivo
+31/08/2019 - Criacao da variavel strFormatoContabil e strFormatoDataAbreviada
+             em outro lugar, caso nao tenha registro, o sistema nao consegue
+             formatar os dados de TOTAL da coluna L
 -------------------------------------------------
 '''
 
@@ -42,6 +44,8 @@ def GravarResultadoEmPlanilha(lstDadosAGravar, lstCabecalho, strVendedor):
     # Acrescentar, na primeira linha, o cabecalho de colunas
     sheet.append(lstCabecalho)
     
+    strFormatoContabil = 'R$ #,###,##0.00;[RED]-R$ #,###,##0.00;R$ 0.00'
+    strFormatoDataAbreviada = 'DD/MM/YYYY'
     c = 1
     for linha in lstDadosAGravar:
         print('[INFO] Vendedor: {}\t-Inserindo linha: {}'.format(
@@ -61,13 +65,15 @@ def GravarResultadoEmPlanilha(lstDadosAGravar, lstCabecalho, strVendedor):
         c += 1
 
         # Formatar coluna especiais com o formato DATA e CONTABIL
-        strFormatoDataAbreviada = 'DD/MM/YYYY'
-        strFormatoContabil = 'R$ #,###,##0.00;[RED]-R$ #,###,##0.00;R$ 0.00'
         sheet['A'+str(c)].number_format = strFormatoDataAbreviada
         sheet['K'+str(c)].number_format = strFormatoContabil
         sheet['L'+str(c)].number_format = strFormatoContabil
         sheet['M'+str(c)].number_format = strFormatoContabil
 
+    #
+    # ACOES A SEREM REALIZADAS APOS PASSAR TODOS OS DADOS PARA A PLANILHA
+    #
+    
     # Adicionar o TOTAL na coluna L
     c += 2
     sheet['K'+str(c)] = 'Total'
@@ -86,9 +92,10 @@ def GravarResultadoEmPlanilha(lstDadosAGravar, lstCabecalho, strVendedor):
     maxcolumnletter = openpyxl.utils.get_column_letter(sheet.max_column)
     sheet.auto_filter.ref = 'A1:'+maxcolumnletter+str(len(sheet['A']))
 
-    sheet.auto_filter.add_filter_column(0, ['30/07/2019'])
-    sheet.auto_filter.add_sort_condition("B2:B500")
+    #sheet.auto_filter.add_filter_column(0, ['30/07/2019'])
+    #sheet.auto_filter.add_sort_condition("B2:B500")
 
+    
 
     
     #print(agora.year, '-', agora.month, '-', agora.day, ' | ',

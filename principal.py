@@ -3,16 +3,15 @@
     Arquivo principal para execucao do sistema de construcao
 de planilhas resumo de vendas do mes
 
-
 Criador : MuriloCunha
 Data    : 01/05/2019
 
 LOG de alteracoes:
--------------------------------------------------
-04/08/2019- Trocando variavel VENDEDORES para uma lista de listas para fazer todo o 
-            processo de exportacao de planilhas em uma execucao
-
--------------------------------------------------
+==============================================================================
+04/08/2019 - Trocando variavel VENDEDORES para uma lista de listas para fazer
+             todo o processo de exportacao de planilhas em uma execucao
+20/08/2019 - Melhorando o comentario de configuracao
+==============================================================================
 '''
 
 
@@ -24,30 +23,33 @@ from dados_confidenciais import dicConexaoOracle
 
 # DADOS A SEREM ALTERADOS PELO USUARIO
 VENDEDORES = [
+    # =============================================================
+    # Formato da Configuracao:
     # [ ID_Vendedor, bolFiltroNot ] , [Estados]
     # bolFiltroNot ==>> False = IN (inclusao do estado)
     #                   True = NOT IN (exclusao dos estados)
+    # =============================================================
     [ [3, False], ['MG'] ],
-    # [ [3, False], ['SP'] ],
-    # [ [3, True], ['MG', 'SP'] ],
-    # [ [10, False], [] ],
-    # [ [13, False], [] ],
-    # [ [16, False], [] ],
-    # [ [19, False], ['MS'] ],
-    # [ [19, True], ['MS'] ],
-    # [ [22, False], ['SP'] ],
-    # [ [22, False], ['MG'] ],
-    # [ [22, True], ['SP', 'MG'] ],
-    # [ [24, False], [] ],
-    # [ [34, False], ['PR'] ],
-    # [ [34, False], ['MS'] ],
-    # [ [34, True], ['PR', 'MS'] ],
-    # [ [35, False], [] ],
-    # [ [38, False], [] ],
-    # [ [40, False], [] ],
+    [ [3, False], ['SP'] ],
+    [ [3, True], ['MG', 'SP'] ],
+    [ [10, False], [] ],
+    [ [13, False], [] ],
+    [ [16, False], [] ],
+    [ [19, False], ['MS'] ],
+    [ [19, True], ['MS'] ],
+    [ [22, False], ['SP'] ],
+    [ [22, False], ['MG'] ],
+    [ [22, True], ['SP', 'MG'] ],
+    [ [24, False], [] ],
+    [ [34, False], ['PR'] ],
+    [ [34, False], ['MS'] ],
+    [ [34, True], ['PR', 'MS'] ],
+    [ [35, False], [] ],
+    [ [38, False], [] ],
+    [ [40, False], [] ],
 ]
-datInicio    = '01/07/2019'
-datFim       = '31/07/2019'
+datInicio    = '01/08/2019'
+datFim       = '31/08/2019'
 # FIM DOS DADOS ALTERADOS PELO USUARIO
 
 
