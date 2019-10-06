@@ -18,7 +18,7 @@ LOG de alteracoes:
 from funArquivoTexto import ArquivoTexto
 from funConexaoOracle import ConexaoOracle
 from funPlanilhaXLSX import GravarResultadoEmPlanilha
-from dados_confidenciais import dicConexaoOracle
+from dados_confidenciais import dicConOracle2Con
 
 
 # DADOS A SEREM ALTERADOS PELO USUARIO
@@ -48,17 +48,17 @@ VENDEDORES = [
     [ [38, False], [] ],
     [ [40, False], [] ],
 ]
-datInicio    = '01/08/2019'
-datFim       = '31/08/2019'
+datInicio    = '01/09/2019'
+datFim       = '30/09/2019'
 # FIM DOS DADOS ALTERADOS PELO USUARIO
 
 
 # Constantes de conexao com o banco
-HOST = dicConexaoOracle['host']
-PORTA = dicConexaoOracle['port']
-USUARIO = dicConexaoOracle['user']
-SENHA = dicConexaoOracle['pass']
-SID = dicConexaoOracle['sid']
+HOST = dicConOracle2Con['host']
+PORTA = dicConOracle2Con['port']
+USUARIO = dicConOracle2Con['user']
+SENHA = dicConOracle2Con['pass']
+SID = dicConOracle2Con['sid']
 ARQ_SQL = 'Cubo_8003.sql'
 
 dicCodUsur = {}

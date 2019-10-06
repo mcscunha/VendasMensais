@@ -12,7 +12,7 @@ conda create --name <env_name> --file <.txt file>
 
 #To export environment file
 activate <environment-name>
-conda env export > <environment-name>.yml
+conda env export > requirements.yml
 
 #For create the environment using file yml
 conda env create -f <environment-name>.yml
